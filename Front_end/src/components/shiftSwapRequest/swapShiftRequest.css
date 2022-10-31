@@ -1,0 +1,131 @@
+@media screen and (max-width:700px) {
+    .Shiftswap{
+        padding:5% !important;
+        font-size: 14px !important;
+    }
+    .Shiftswap>.Modal{
+        
+        gap:0 !important;
+        margin-bottom: 3% !important;
+    }
+    .date>.Day-lists{
+        width: 80%;
+        height: 1.4rem !important;
+        font-size: 1rem !important;
+        border: 1.5px solid var(--wink-color) !important;
+        /* border-radius: 0.3em; */
+    }
+    .Shiftswap>.Reason-container{
+        margin-top: 3% !important;
+    }
+    .Shiftswap>.Reason-container>label{
+    margin-bottom:3% !important;
+    }
+    .Shiftswap>.Reason-container>.Reason-box{
+        height: 2rem;
+    }
+    .Shiftswap>.Modal>.Request-btn{
+        
+        
+        height: 1.5rem !important;
+        
+    }
+}
+
+button{
+    cursor: pointer;
+}
+.Shiftswap{
+    padding: 1em;
+    display: flex;
+    flex-direction: column;
+    color: var(--font-darkgrey);
+    position: relative;
+}
+.Shiftswap>.close{
+    width: fit-content;
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    color:var(--fond-darkgrey)
+
+    /* color: none;; */
+
+}
+.Shiftswap>.Modal{
+    display: flex;
+    flex-direction: column;
+    gap:1em;
+    margin-bottom: 1em;
+}
+.Shiftswap>.Modal>.Request-btn{
+    margin-left: auto;
+    color:var(--font-darkgrey);
+    font-weight: bold;
+    background-color: var(--wink-color-lightest);
+    /* width: 2.1rem; */
+    height: 2.1rem;
+    border: none;
+    border-radius: 0.5rem;
+}
+.Shiftswap>.Modal>.Message{
+    display: inline-block;
+    text-align: start;
+    height: 1em;
+    font-size: 0.8em;
+    color: var(--warning-color);
+}
+.Shiftswap>.date{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+ 
+}
+
+.date>.Day-lists{
+    width: 80%;
+    height: 2em;
+    font-size: 1.2em;
+    color:var(--font-darkgrey); 
+    box-shadow: var(--button-shadow);
+    cursor: pointer;
+    border: 3px solid var(--wink-color);
+    border-radius: 0.3em;
+    
+}
+.Shiftswap>.Reason-container{
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+.Shiftswap>.Reason-container>label{
+margin-right:auto;
+margin-bottom:1rem;
+}
+.Shiftswap>.Reason-container>.Reason-box{
+    border: 1px solid var(--grid-color);
+}
+.Shiftswap>.Schedules-container{
+    margin-top:1rem;
+    display: flex;
+    flex-direction: column;
+     align-items: flex-start;
+    justify-content: start; 
+    text-align: start;
+}
+.Shiftswap>.Schedules-container> label{
+    margin-bottom: 1rem;
+}
+.Schedules-container> .Container{
+display: flex;
+flex-direction: column;
+gap: 0.5rem;
+}
+.Schedules-container>.Container>div{
+font-size: 0.85rem;
+display: flex;
+flex-direction: row;
+gap: 0.5rem;
+justify-items: center;
+align-items: center;
+}

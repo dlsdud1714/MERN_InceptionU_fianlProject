@@ -1,0 +1,42 @@
+.Schedule>.Full-bar{
+    position: absolute;
+    width: 100%;
+    display:grid;
+}
+.Full-bar>.Percentage-bar{
+    height: 100%;
+    width: 100%;
+    
+}
+
+.Full-bar>.Percentage-bar.working{
+    background-color: var(--wink-color-light);
+    border-radius: 5px;
+    display: flex;
+}
+
+.Full-bar>.Percentage-bar.vacation{
+    background-color: var(--font-darkgrey);
+    
+}
+.Percentage-bar>.hours{
+    width: 100%;
+    height: 100%;
+    color: white;
+    height: fit-content;
+    margin: auto;
+    font-size: 0.6em;
+    overflow: hidden;
+    /* display: flex;
+    margin: 0 auto; */
+    /* justify-content: flex-start;
+    align-items: flex-start; */
+}
+.hours>.number{
+ /* overflow: hidden; */
+ /* width: fit-content; */
+}
+.hours>.unit{
+    /* overflow: hidden; */
+   
+}

@@ -1,0 +1,38 @@
+.location-header {
+  display: flex;
+  justify-content: center;
+  margin-top: 5rem;
+  color:#00b3b4
+  
+}
+
+
+.location-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+
+  grid-gap: 10px;
+
+  margin-top: 1rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.location-button {
+  width: 100%;
+  height: 100%;
+  background-color: lightgrey;
+
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 1rem;
+  font-size: 0.5em;
+  font-weight: bold;
+  color: #00b3b4;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.location-button:hover {
+  background-color: #00b3b4;
+  color: white;
+}

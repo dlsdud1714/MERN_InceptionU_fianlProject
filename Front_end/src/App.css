@@ -1,0 +1,52 @@
+:root {
+  --wink-color: #23A5A5;
+  --wink-color-light: #71C8C8;
+  --wink-color-lightest: rgba(210, 228, 227, 0.495);
+  --grid-color: #bec6c67f;
+  --warning-color: rgb(218, 30, 30);
+  --font-darkgrey: #5a5a5a;
+  --font-black: #000000;
+  --weekend-color: #bd4a31;
+  --background-shadow: rgba(0, 0, 0, 0.10) 0px 3px 5px;
+  --button-shadow: rgba(0, 0, 0, 0.15) 0px 1px 2px;
+  --button-inner-shadow: inset 1px 1px 5px rgba(0, 0, 0, 0.25);
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

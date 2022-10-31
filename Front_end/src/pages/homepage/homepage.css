@@ -1,0 +1,32 @@
+.home {
+    
+    display: flex;  
+}
+
+.message {
+    position: absolute;
+    bottom: 1rem;
+    right: 1rem;
+
+}
+.home >.calendar-container{
+    width: 50%;
+    height: 30em;
+    display: flex;
+    flex-direction: column;
+    margin: 10em auto 0 auto;
+
+    padding: 5em;
+    border-radius: 3.5em;
+    box-shadow: var(--background-shadow);
+    min-width: 39.6em;
+    gap:1em;
+    overflow-y: scroll;
+}
+.home>.calendar-container>.calendar-header{
+    display: flex;
+}
+
+.home>.calendar-container>.calendar-header>.today{
+margin-left:auto;
+}

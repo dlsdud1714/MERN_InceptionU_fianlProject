@@ -1,0 +1,18 @@
+.today{
+    
+    height: 2.1rem;
+    width: 2.1rem;
+   border: none;
+   border-radius: 0.5rem;
+   background: var(--wink-color);
+   padding: 0.2em;
+   color: white;
+   font-weight: bold;
+   font-stretch:ultra-condensed;
+   /* box-shadow: var(--button-shadow); */
+   font-size: 0.6em;
+   cursor: pointer;
+}
+.today:active{
+    box-shadow: var(--button-inner-shadow);
+}

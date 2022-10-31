@@ -1,0 +1,249 @@
+.Side-bar{
+    display: flex;
+    flex-direction: column;
+    /* gap:4rem; */
+    padding: 2rem 1rem;
+  
+    /* align-items: flex-start; */
+}
+.Side-bar>.Period-container{
+    display: flex;
+    flex-direction: column;
+}
+.Side-bar>.Period-container>.RangeNrefresh-container{
+    display: flex;
+    position: relative;
+    margin-bottom: 0.5rem;
+    justify-content: center;
+    font-size: 0.8em;
+    
+}
+.Side-bar>.Period-container>.RangeNrefresh-container>.Range-container{
+    display: flex;
+    flex-direction: row;
+    margin: 0.5rem 0;
+    justify-content: center;
+    align-items: center;
+    gap:0.5rem;
+    
+}
+.Side-bar>.Period-container>.RangeNrefresh-container> svg{
+    position: absolute;
+    right:0;
+    height: 31px;
+   
+}
+.Side-bar>.Period-container>.RangeNrefresh-container> svg:hover{
+    cursor: pointer;
+   
+}
+.Side-bar>.Period-container>.RangeNrefresh-container>.Range-container>.Range-buttons{
+   color: var(--wink-color);
+}
+.Side-bar>.Period-container>.RangeNrefresh-container>.Range-container>.Range-buttons:hover{
+    cursor: pointer;
+ }
+
+.Side-bar>.Period-container>.Range-container>.Range{
+    width: fit-content;
+}
+.Side-bar>.Period-container>.Date-choice-box {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+}
+
+.Side-bar>.Period-container>.Date-choice-box>select{
+    width: 80%;
+    height: 2.3rem;
+    font-size: 1.2em;
+    color:var(--font-darkgrey); 
+    box-shadow: var(--button-shadow);
+    cursor: pointer;
+    border: 3px solid var(--wink-color);
+    border-radius: 0.3em;
+}
+
+.all-filters>.userFilter{
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 95%;
+    align-items: flex-start;
+}
+/* .userFilter>.filters-title{
+    margin: 0;
+} */
+
+.userFilter>.filters{
+    display: flex;
+    flex-direction: column;
+    /* gap: 2em;  */
+    width: 95%;
+    align-self: center;
+}
+.filters>.filters-refreshNtitle{
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    gap: 0.5em;
+    flex-direction: row;
+    
+    /* justify-content: space-between; */
+}
+.all-filters{
+   display: flex;
+   flex-direction: column;
+   align-items: flex-start;
+   gap:1rem;
+}
+.filter-label>.toggle-button{
+    visibility: hidden;
+    color: var(--wink-color);
+}
+.filters>.filters-container{
+  
+    display: flex;
+    flex-direction: column;
+    gap:1rem;
+}
+.filters>div>div {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5em;
+    /* flex-wrap: wrap; */
+}
+.filters>div>div>label{
+    font-size: 0.8rem;
+}
+.filters>div>div>div{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap:0.2em;
+    
+}
+
+.filters>.filters-refreshNtitle>svg{
+    margin-left:auto ;
+    cursor: pointer;
+    font-size:0.8em;
+}
+.filters button{
+    border-radius: 0.4rem;
+    height: 1.8em;
+}
+.hours> button{
+    border: 2px solid var(--wink-color);
+    color:var(--font-darkgrey);
+    background-color: aliceblue;
+}
+.hours>button.true{
+    background-color:var(--wink-color);
+    color: aliceblue;
+}
+.positions>button{
+    border: 0;
+    color:white;
+}
+
+
+.userFilter>.user-filter{
+    width: 100%;  
+}
+.userFilter>.user-filter>div{
+    width: 100%;  
+} 
+
+.userFilter>.user-filter>div>div>div>div>button{
+    height: 100%;
+ }  
+
+.user-filter .MuiButtonBase-root >svg{
+    height: 80% !important;;
+  }
+.user-filter .MuiButtonBase-root{
+    height: 1.3em !important;
+  }
+ .user-filter .MuiOutlinedInput-root>input{
+    padding:0 !important;;
+  }
+.user-filter .MuiInputLabel-root{
+    top:-17% !important;
+  }
+.MuiAutocomplete-listbox{
+    display: flex;
+    flex-direction: column;
+    /* gap:1em !important; */
+    
+}
+.MuiAutocomplete-listbox>div{
+    overflow: visible !important;
+    height: 2em !important
+}
+.MuiAutocomplete-listbox .icon{
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+.all_button.true{
+    background-color:var(--wink-color);
+    color: aliceblue;
+}
+.all_button.false{
+    border: 2px solid var(--wink-color);
+    color:var(--font-darkgrey);
+    background-color: white;
+}
+
+@media  only screen and (max-width:1000px) {
+    .Side-bar{
+       gap:1rem;
+       padding:1rem 1rem 0 1rem;
+       align-items: center;
+    }
+    .Side-bar>.Period-container{
+        width: 95%;
+    }
+    .Side-bar>.Period-container>.Date-choice-box>select{
+        height: 1.8rem;
+        font-size: 1rem;
+    }
+    .Side-bar>.userFilter{
+        gap:1rem;
+        align-self: center;
+        justify-self: center;
+    }
+    .Side-bar>.userFilter>.user-filter{
+        width: 70%;
+    }
+    .userFilter>.filters{
+        gap:1rem;
+       width: 100%;
+    }
+
+.filter-label>.toggle-button{
+    visibility: visible;
+    background-color: transparent;
+    border: none;
+    color: var(--wink-color);
+    height: fit-content;
+    transition: transform 300ms ease-in-out;
+}
+.filter-label>.toggle-button.true{
+    transform: rotate(180deg);
+}
+   .filter-label{
+    display: flex;
+    flex-direction: row;
+    gap:1rem;
+}
+.all-filters{
+    /* align-self: flex-start; */
+    align-items: flex-start;
+    width: 95%;
+  }
+
+   }

@@ -1,0 +1,73 @@
+@media screen and (max-width:700px) {
+    .Calendars{
+        /* flex-direction: column; */
+       display: block !important;
+    }
+    .Calendars-container{
+        overflow: scroll;
+    }
+    .Side-modal-container{
+        position:sticky;
+        position: -webkit-sticky;
+        bottom: 0;
+
+        /* height: 200px !important; */
+        overflow: scroll;
+        box-shadow: 0px -1px 3px -2px #888 !important;
+        /* align-self: flex-end;  */
+        /* left: 0; */
+    }
+}
+
+.Calendars{
+    display: flex;
+    /* height: 100%; */
+}
+.Calendars-container{
+    display: flex;
+    flex-direction: column;
+    /* width: 100%; */
+    padding: 4%;
+    flex:4;
+     /* min-width: 36em; */
+     gap:1em;
+}
+
+.Calendars-container>.Calendar-header{
+    display: flex;
+    flex-direction: column;
+   gap:1em;
+}
+.Calendars-container>.Calendar-header>.Calendar-buttons{
+    display: flex;
+    flex-direction: row;
+    /* align-self: stretch; */
+    /* justify-content: right; */
+    gap:2em;  
+    align-items: center;
+}
+
+.Calendar-header>.Calendar-buttons>.View-buttons{
+    margin-left: auto;
+
+}
+.Calendar-header>.Display-filters-container{
+    align-self: flex-start;
+    color:var(--font-darkgrey)
+}
+.Side-modal-container{
+    flex:1;
+    /* min-width: 300px; */
+    /* margin-top: 3.7rem; */
+    border-left: var(--background-shadow);
+    box-shadow: 0px -10px 5px -2px #888;
+    background-color: white;
+   z-index: 499;
+}
+
+@media screen and (max-width:700px) {
+    .Calendar-buttons>.today{
+        margin-left: auto;
+    
+    }
+}

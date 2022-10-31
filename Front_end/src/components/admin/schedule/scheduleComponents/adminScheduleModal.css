@@ -1,0 +1,55 @@
+
+.MuiPaper-root>.MuiTypography-root{
+ display: flex;
+ flex-direction: row;
+ align-items: center;
+}
+.MuiPaper-root>.MuiTypography-root>.icon{
+    margin-left:1rem;
+    margin-right: 0.5rem;
+    height: 100%;
+    align-items: center;
+}
+.MuiPaper-root>.MuiTypography-root>.icon>p{
+   height: fit-content ;
+   vertical-align: middle;
+   display: table-cell;
+  
+}
+.MuiPaper-root>.MuiTypography-root>.name{
+    color: var(--font-darkgrey)
+}
+
+.modal-contents{
+    display: flex;
+    flex-direction: column;
+    gap:0.5rem;
+   
+}
+.modal-contents>div{
+    display: flex;
+    flex-direction: row;
+    gap:0.5rem;
+    height: 1.5em;
+}
+.modal-contents>.dateNtime{
+    display: flex;
+    height: fit-content;
+    flex-wrap: wrap;
+
+}
+.modal-contents>.dateNtime>div{
+    display: flex;
+    
+    gap:5%;
+}
+.modal-contents>.dateNtime>.date-container{
+    min-width: 180px;
+}
+.modal-contents>.dateNtime>.vacation-endDate-container{
+    min-width: 190px;
+}
+.css-1t1j96h-MuiPaper-root-MuiDialog-paper{
+    width:50%;
+    /* height: 100%; */
+}

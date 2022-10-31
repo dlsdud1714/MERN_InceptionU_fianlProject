@@ -1,0 +1,49 @@
+.Table-info-header{
+    display: flex;
+    flex-direction: column;
+    gap: 0.5em;
+    
+}
+
+.Table-info{
+    display: flex;
+    justify-content: space-between;
+    /* padding: 2em 3em; */
+    font-size: 0.8em;
+}
+.Table-info> .Store-hours{
+    display: flex;
+    flex-direction: column;
+    width: 12em;
+    color: var(--font-darkgrey);
+    gap: 0.4em;
+}
+.Store-hours p{
+    display: flex;
+    margin: 0;
+}
+.Store-hours p > .at{
+    flex:1;
+    text-align: start;
+}
+.Store-hours> p> .time{
+    flex:3;
+    text-align: start;
+}
+
+.Table-info>.right{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.Table-info>.Work-code{
+    color: var(--font-darkgrey);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4em;
+}
+.Work-code> div{
+    align-self: start;
+    display: flex;
+    gap: 0.4em;
+}

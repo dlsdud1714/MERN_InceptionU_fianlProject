@@ -1,0 +1,202 @@
+.DailyCal-container{
+    color: var(--font-darkgrey);
+    margin-top:7%;
+}
+
+.DailyCal-container>.Weekly-summary-container{
+    height: 100%; 
+    width: 50%;
+    background-color: white;
+ 
+    padding: 1.5em;
+    border-radius: 3em;
+    box-shadow: rgba(0, 0, 0, 0.10) 0px 2px 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap:2rem;
+    margin: 0 auto;
+ 
+}
+
+.Weekly-summary-container>.Weekly-summary{
+ display: flex;
+ flex-direction: row;
+ width: 100%;
+ justify-content: center;
+ 
+}
+.Weekly-summary-container>.title{
+    color: var(--wink-color);
+    font-weight: bold;
+    font-size: var(--font-header-size);
+    
+}
+.Weekly-summary>.User-profile{
+    flex:1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap:0.5em;
+}
+
+.Weekly-summary>.summary{
+    flex:1
+}
+.summary>div{
+    text-align: start;
+    margin-bottom: 0.5rem ;
+}
+
+.DailyCal-container>.Table-container{
+    /* margin-top: 5em; */
+    height: 100%; 
+    width: 100%;
+    background-color: white;
+    /* border-radius: 3em; */
+    display: flex;
+   /* margin: 0 auto; */
+    flex-direction: column;
+
+}
+.Table-container>.Table-header{
+    width: 100%;
+    padding-bottom: 5%;
+    font-weight: bold;
+    white-space: nowrap;
+    color: var(--wink-color)
+}
+.Table-header>.Header-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 10%;
+    align-items: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+
+.Table-container>.Time-header-container{
+    width: 100%;
+    overflow: hidden;
+}
+.Table-container>.Time-header-container>.Time-header{
+    display: grid;
+    grid-template-columns: repeat(10, 1fr);
+    grid-column: 2/-1;
+    width: 78%;
+    margin: 0 1.8% 0 auto;
+}
+.Table-container>.Time-header-container>.Time-header>div{
+    font-size: 10%;
+    overflow: hidden;
+}
+
+.Table-container>.Table-body-container{
+    display: grid;
+    grid-template-columns: 20% 1fr;
+    /* grid-template-rows: repeat(auto-fit, minmax(1em, 1fr)); */
+    grid-auto-rows: 1fr;
+    position: relative;
+    padding-top: 1em;
+    width: 90%;
+    align-self: center;
+}
+.Table-body-container>div{
+    border-bottom: 0.5px solid var(--grid-color);
+}
+.Table-body-container>.gridLines{
+    position: absolute;
+    display: flex;
+    left:20%;
+    width: 80%;
+    top:1em;
+    height:calc(100% - 1em) ;
+    border-left: 0.1px solid var(--grid-color);
+    border-bottom: none;
+}
+.Table-body-container>.gridLines>div{
+    flex:1;
+    border-left: 0.1px solid rgba(255, 255, 255, 0.469);
+}
+.Table-body-container>.profile-container{
+    grid-column: 1/2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap:1em;
+    /* height: 2em; */
+    padding: 5% 5% ;
+    font-size: 0.75em;
+    /* width: 70%; */
+    
+}
+@media screen and (max-width:677px) {
+    .Table-container>.Table-body-container{
+        
+        grid-template-columns: 35% 1fr;}
+        .Table-body-container>.gridLines{
+            left:35%;
+            width: 65%;
+        }
+    .Time-header{
+        margin-left: 33% !important;
+        width: 65% !important;
+        
+    }    
+    
+   
+   .profile-container{
+
+       flex-direction: column !important;
+       gap:0.2em !important;
+   }
+}
+.profile-container.my>.name{
+font-weight: bold;
+}
+.Table-body-container>.profile-container>.name{
+    width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+-webkit-line-clamp: 2;
+-webkit-box-orient: vertical;
+}
+
+.Table-body-container>.schedules-container{
+   position:relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+  
+}
+.Table-body-container>.schedules-container> .Schedule{
+    
+    position: absolute;
+    height:1.5em;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: auto 0;
+}
+.Table-body-container>.schedules-container>.Schedule>.Full-bar{
+    position: relative;
+    height: 100%
+}
+.schedules-container>.Schedule>.Full-bar>.Percentage-bar{
+    /* position: relative */
+}
+ .schedules-container>.Schedule>.Full-bar>.Percentage-bar>.text{
+    position: absolute;
+    top: 2em;
+    width: 100%;
+    height: fit-content;
+    font-size: 0.8em;
+    /* background-color: white; */
+    white-space: nowrap;
+}

@@ -1,0 +1,16 @@
+.WeeklyCal-date{
+
+    justify-self: stretch;
+    text-align: start;
+    margin: auto 0;
+  
+
+}
+.WeeklyCal-date.Weekend{
+    color: var(--weekend-color)
+}
+.WeeklyCal-date.Today{
+    color: var(--wink-color);
+    font-weight: bold;
+}
+

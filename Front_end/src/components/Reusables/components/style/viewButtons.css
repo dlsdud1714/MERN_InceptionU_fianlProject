@@ -1,0 +1,48 @@
+
+
+.View-buttons{
+    display: flex;
+    
+background-color: rgba(210, 228, 227, 0.495);
+border-radius: 0.5rem;
+
+}
+.View-buttons> button{
+    position: relative;
+    border: none;
+    border-radius: 0.5rem;
+
+    height: 2.1rem;
+    cursor: pointer;
+    background-color: transparent;
+    
+    width: 2.4rem;
+}
+.View-buttons>button>svg{
+    position: absolute;
+    font-size: 1.8em;
+    left:0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    color: var(--wink-color);
+}
+.View-buttons>button>p{
+ font-size: 0.8em;
+ color: var(--font-darkgrey);
+ font-weight: bold;
+
+}
+.View-buttons>.selected{
+    background-color: var(--wink-color);
+}
+.View-buttons>.selected>svg{
+    color: white
+}
+.View-buttons>.selected>p{
+    color: white
+}
+
+
+
