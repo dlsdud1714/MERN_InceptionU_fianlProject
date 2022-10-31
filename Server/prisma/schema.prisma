@@ -1,0 +1,993 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model schedule {
+  idSchedule          Int                   @id @default(autoincrement())
+  workcode            Int?
+  starttime           DateTime?             @default(dbgenerated("(0000-00-00 00:00:00)")) @db.Timestamp(0)
+  endtime             DateTime?             @default(dbgenerated("(0000-00-00 00:00:00)")) @db.Timestamp(0)
+  User_idUser         Int?
+  Store_idStore       Int?
+  archived            Boolean?              @default(false)
+  store               store?                @relation(fields: [Store_idStore], references: [idStore], onDelete: NoAction, onUpdate: NoAction, map: "storeId")
+  user                user?                 @relation(fields: [User_idUser], references: [idUser], onDelete: NoAction, onUpdate: NoAction, map: "userId")
+  employee_shift_swap employee_shift_swap[]
+
+  @@index([Store_idStore], map: "fk_Schedule_Store_idx")
+  @@index([User_idUser], map: "fk_Schedule_User_idx")
+}
+
+model appointments {
+  idAppointments                                                                         Int              @id @default(autoincrement())
+  fromOld                                                                                DateTime         @default(dbgenerated("(0000-00-00 00:00:00)")) @db.Timestamp(0)
+  toOld                                                                                  DateTime         @default(dbgenerated("(0000-00-00 00:00:00)")) @db.Timestamp(0)
+  status                                                                                 Int
+  comment                                                                                Bytes            @db.Blob
+  version                                                                                Int
+  Store_idStore                                                                          Int?
+  Doctor_idPatient                                                                       Int?
+  Patient_idPatient                                                                      Int?
+  isBusy                                                                                 Boolean
+  inactive                                                                               Boolean
+  AppointmentTypes_idAppointmentTypes                                                    Int?
+  InitialAppointmentTypes_idAppointmentTypes                                             Int?
+  googleCalendarVersion                                                                  Int              @default(0)
+  outlookCalendarVersion                                                                 Int              @default(0)
+  macCalendarVersion                                                                     Int              @default(0)
+  googleEventID                                                                          String?          @db.VarChar(300)
+  fromDate                                                                               BigInt           @default(0)
+  toDate                                                                                 BigInt           @default(0)
+  isHistorical                                                                           Boolean          @default(false)
+  EmailVersion                                                                           Int
+  EmailSentOn                                                                            BigInt
+  SMSVersion                                                                             Int
+  SMSSentOn                                                                              BigInt
+  Appointments_idAppointments                                                            Int?
+  doubleBooked                                                                           Boolean          @default(false)
+  SMSDateFrom                                                                            BigInt           @default(0)
+  SMSStatus                                                                              Int              @default(0)
+  EmailDateFrom                                                                          BigInt           @default(0)
+  EmailStatus                                                                            Int              @default(0)
+  SMSInactive                                                                            Boolean          @default(false)
+  EmailInactive                                                                          Boolean          @default(false)
+  DialerDateFrom                                                                         BigInt           @default(0)
+  DialerStatus                                                                           Int              @default(0)
+  DialerVersion                                                                          Int              @default(0)
+  DialerInactive                                                                         Boolean          @default(false)
+  DialerSentOn                                                                           BigInt           @default(0)
+  AutoDialerDateFrom                                                                     BigInt           @default(0)
+  AutoDialerStatus                                                                       Int              @default(0)
+  AutoDialerVersion                                                                      Int              @default(0)
+  AutoDialerInactive                                                                     Boolean          @default(false)
+  AutoDialerSentOn                                                                       BigInt           @default(0)
+  hasUnreadReplies                                                                       Boolean          @default(false)
+  hasReplies                                                                             Boolean          @default(false)
+  earlyRequest                                                                           Boolean          @default(false)
+  earlyRequestComment                                                                    String?          @db.VarChar(255)
+  AppointmentTypes_idAppointmentTypes2                                                   Int?
+  InitialAppointmentTypes_idAppointmentTypes2                                            Int?
+  AppointmentTypes_idAppointmentTypes3                                                   Int?
+  InitialAppointmentTypes_idAppointmentTypes3                                            Int?
+  AppointmentTypes_idAppointmentTypes4                                                   Int?
+  InitialAppointmentTypes_idAppointmentTypes4                                            Int?
+  AppointmentTypes_idAppointmentTypes5                                                   Int?
+  InitialAppointmentTypes_idAppointmentTypes5                                            Int?
+  rescheduledToAppointments_idAppointments                                               Int?
+  cancelReason                                                                           Int              @default(0)
+  cancelReasonComment                                                                    String?          @db.VarChar(300)
+  Supplier_idSupplier                                                                    Int?
+  PreValidatedOn                                                                         BigInt           @default(0)
+  PreValidationResponse                                                                  Bytes?           @db.Blob
+  PreValidationPassed                                                                    Boolean          @default(false)
+  isBookedOnline                                                                         Boolean          @default(false)
+  preTestCompleted                                                                       BigInt?
+  distance                                                                               Decimal          @default(0.00) @db.Decimal(10, 2)
+  source                                                                                 String?          @db.VarChar(300)
+  isTelehealth                                                                           Boolean          @default(false)
+  telehealthUrlPatient                                                                   String?          @db.VarChar(400)
+  telehealthUrlProvider                                                                  String?          @db.VarChar(400)
+  telehealthStatus                                                                       Int              @default(0)
+  appointments_appointmentsToappointments_Appointments_idAppointments                    appointments?    @relation("appointmentsToappointments_Appointments_idAppointments", fields: [Appointments_idAppointments], references: [idAppointments], onDelete: Restrict, onUpdate: Restrict, map: "fk_Appointments_Appointments1")
+  user                                                                                   user?            @relation(fields: [Doctor_idPatient], references: [idUser], onDelete: Restrict, onUpdate: Restrict, map: "fk_Appointments_Patient1")
+  patient                                                                                patient?         @relation(fields: [Patient_idPatient], references: [idPatient], onDelete: Restrict, onUpdate: Restrict, map: "fk_Appointments_Patient2")
+  store                                                                                  store?           @relation(fields: [Store_idStore], references: [idStore], onDelete: Restrict, onUpdate: Restrict, map: "fk_Appointments_Store1")
+  appointments_appointmentsToappointments_rescheduledToAppointments_idAppointments       appointments?    @relation("appointmentsToappointments_rescheduledToAppointments_idAppointments", fields: [rescheduledToAppointments_idAppointments], references: [idAppointments], onDelete: Restrict, onUpdate: Restrict, map: "fk_Appointments_Appointments2")
+  other_appointments_appointmentsToappointments_Appointments_idAppointments              appointments[]   @relation("appointmentsToappointments_Appointments_idAppointments")
+  other_appointments_appointmentsToappointments_rescheduledToAppointments_idAppointments appointments[]   @relation("appointmentsToappointments_rescheduledToAppointments_idAppointments")
+  patientinvoice                                                                         patientinvoice[]
+
+  @@index([InitialAppointmentTypes_idAppointmentTypes5], map: "fk_Appointments_AppointmentType10_idx")
+  @@index([AppointmentTypes_idAppointmentTypes2], map: "fk_Appointments_AppointmentType3_idx")
+  @@index([InitialAppointmentTypes_idAppointmentTypes2], map: "fk_Appointments_AppointmentType4_idx")
+  @@index([AppointmentTypes_idAppointmentTypes3], map: "fk_Appointments_AppointmentType5_idx")
+  @@index([InitialAppointmentTypes_idAppointmentTypes3], map: "fk_Appointments_AppointmentType6_idx")
+  @@index([AppointmentTypes_idAppointmentTypes4], map: "fk_Appointments_AppointmentType7_idx")
+  @@index([InitialAppointmentTypes_idAppointmentTypes4], map: "fk_Appointments_AppointmentType8_idx")
+  @@index([AppointmentTypes_idAppointmentTypes5], map: "fk_Appointments_AppointmentType9_idx")
+  @@index([AppointmentTypes_idAppointmentTypes], map: "fk_Appointments_AppointmentTypes1_idx")
+  @@index([InitialAppointmentTypes_idAppointmentTypes], map: "fk_Appointments_AppointmentTypes2_idx")
+  @@index([Appointments_idAppointments], map: "fk_Appointments_Appointments1_idx")
+  @@index([rescheduledToAppointments_idAppointments], map: "fk_Appointments_Appointments2_idx")
+  @@index([Doctor_idPatient], map: "fk_Appointments_Patient1")
+  @@index([Patient_idPatient], map: "fk_Appointments_Patient2")
+  @@index([Store_idStore], map: "fk_Appointments_Store1")
+  @@index([Supplier_idSupplier], map: "fk_Appointments_Supplier1_idx")
+  @@index([Patient_idPatient, fromDate], map: "lastExam")
+  @@index([Store_idStore, fromDate], map: "todaysAppointments")
+}
+
+model patient {
+  idPatient                                                           Int              @id @default(autoincrement())
+  referredBy_idPatient                                                Int?
+  firstname                                                           String           @db.VarChar(45)
+  lastname                                                            String           @db.VarChar(45)
+  address1                                                            String           @db.VarChar(45)
+  address2                                                            String           @db.VarChar(45)
+  city                                                                String           @db.VarChar(45)
+  province                                                            String           @db.VarChar(45)
+  postalcode                                                          String           @db.VarChar(45)
+  home                                                                String           @db.VarChar(45)
+  cell                                                                String           @db.VarChar(45)
+  work                                                                String           @db.VarChar(45)
+  fax                                                                 String           @db.VarChar(45)
+  mainnumber                                                          Int
+  email                                                               String           @db.VarChar(45)
+  dob                                                                 DateTime?        @db.Date
+  sex                                                                 Int
+  medialcard                                                          String           @db.VarChar(45)
+  drivers                                                             String           @db.VarChar(45)
+  version                                                             Int
+  inactive                                                            Boolean
+  note                                                                Bytes            @db.Blob
+  Reference1                                                          String?          @db.VarChar(45)
+  Reference2                                                          String?          @db.VarChar(45)
+  unit                                                                String           @db.VarChar(45)
+  Country_idCountry                                                   Int?
+  title                                                               Int              @default(0)
+  language                                                            Int              @default(0)
+  lastEyeExam                                                         DateTime?        @db.Date
+  ReferringDoctor_idUser                                              Int?
+  nocall                                                              Boolean          @default(false)
+  notxt                                                               Boolean          @default(false)
+  noemail                                                             Boolean          @default(false)
+  nofax                                                               Boolean          @default(false)
+  wearsCL                                                             Boolean?
+  wearsProgressives                                                   Boolean?
+  wearsBifocal                                                        Boolean?
+  lastEE                                                              BigInt?
+  nextEE                                                              BigInt?
+  totalSpending                                                       Int?
+  avgSpending                                                         Int?
+  createdDate                                                         BigInt
+  lastPurchaseDate                                                    DateTime?        @db.Date
+  lastContactLensPurchaseDate                                         DateTime?        @db.Date
+  lastEyeGlassPurchaseDate                                            DateTime?        @db.Date
+  Store_idStore                                                       Int?
+  enteredInStore_idStore                                              Int?
+  recall1                                                             DateTime?        @db.Date
+  recall2                                                             DateTime?        @db.Date
+  passedAway                                                          Boolean          @default(false)
+  passedAwayOn                                                        DateTime?        @db.Date
+  totalAmountInvoices                                                 Decimal?         @db.Decimal(10, 2)
+  totalAmountCreditNotes                                              Decimal?         @db.Decimal(10, 2)
+  totalAmountEE                                                       Decimal?         @db.Decimal(10, 2)
+  totalInvoices                                                       Int?
+  totalCreditNotes                                                    Int?
+  totalInvoicesAtZero                                                 Int?
+  PrimaryInsurer                                                      String           @db.VarChar(45)
+  PrimaryInsurerAccountNumber                                         String           @db.VarChar(45)
+  PrimaryInsurerGroupNumber                                           String           @db.VarChar(45)
+  PrimaryInsurerPlanName                                              String           @db.VarChar(45)
+  SupplementalInsurer                                                 String           @db.VarChar(45)
+  SupplementalInsurerAccountNumber                                    String           @db.VarChar(45)
+  SupplementalInsurerGroupNumber                                      String           @db.VarChar(45)
+  SupplementalInsurerPlanName                                         String           @db.VarChar(45)
+  PrimaryInsurerOther                                                 Bytes?           @db.Blob
+  SupplementalInsurerOther                                            Bytes?           @db.Blob
+  PatientPrivacyConsentFormSignedOn                                   BigInt?
+  PatientPrivacyConsentAcceptAds                                      Boolean          @default(false)
+  PatientPrivacyConsentMethod                                         Int              @default(0)
+  PatientPrivacyConsentIPAddress                                      String?          @db.VarChar(45)
+  sin                                                                 String           @default(dbgenerated("()")) @db.VarChar(45)
+  ReferalMethods_idReferalMethods                                     Int?
+  zenddeskid                                                          BigInt?
+  facebookid                                                          String?          @db.VarChar(300)
+  linkedinid                                                          String?          @db.VarChar(300)
+  twitterid                                                           String?          @db.VarChar(300)
+  googleid                                                            String?          @db.VarChar(300)
+  pinterestid                                                         String?          @db.VarChar(300)
+  instagramid                                                         String?          @db.VarChar(300)
+  medialcardexpiry                                                    String           @default(dbgenerated("()")) @db.VarChar(45)
+  recall1comment                                                      String?          @db.VarChar(300)
+  recall2comment                                                      String?          @db.VarChar(300)
+  PrimaryInsurerSupplier_idSupplier                                   Int?
+  SupplementalSupplier_idSupplier                                     Int?
+  PrimaryInsuredPatient_idPatient                                     Int?
+  SupplementalInsuredPatient_idPatient                                Int?
+  PrimaryInsurancePlan_idInsurancePlan                                Int?
+  SupplementalInsurancePlan_idInsurancePlan                           Int?
+  TertiaryInsuredPatient_idPatient                                    Int?
+  OtherInsuredPatient_idPatient                                       Int?
+  TertiaryInsurancePlan_idInsurancePlan                               Int?
+  OtherInsurancePlan_idInsurancePlan                                  Int?
+  TertiaryInsurerSupplier_idSupplier                                  Int?
+  OtherInsurerSupplier_idSupplier                                     Int?
+  TertiaryInsurer                                                     String           @db.VarChar(45)
+  TertiaryInsurerAccountNumber                                        String           @db.VarChar(45)
+  TertiaryInsurerGroupNumber                                          String           @db.VarChar(45)
+  TertiaryInsurerPlanName                                             String           @db.VarChar(45)
+  TertiaryInsurerOther                                                Bytes?           @db.Blob
+  OtherInsurer                                                        String           @db.VarChar(45)
+  OtherInsurerAccountNumber                                           String           @db.VarChar(45)
+  OtherInsurerGroupNumber                                             String           @db.VarChar(45)
+  OtherInsurerPlanName                                                String           @db.VarChar(45)
+  OtherInsurerOther                                                   Bytes?           @db.Blob
+  PatientTags_idPatientTags1                                          Int?
+  PatientTags_idPatientTags2                                          Int?
+  PatientTags_idPatientTags3                                          Int?
+  PatientTags_idPatientTags4                                          Int?
+  PatientTags_idPatientTags5                                          Int?
+  PreferredReminderMethod                                             Int              @default(0)
+  MedicalCardVersion                                                  String           @default(dbgenerated("()")) @db.VarChar(45)
+  PatientLogin_idPatientLogin                                         Int?
+  defaultRecallFrequencyMonths                                        Int              @default(0)
+  occupation                                                          String           @default(dbgenerated("()")) @db.VarChar(45)
+  longitude                                                           Decimal          @default(0.00000000) @db.Decimal(15, 8)
+  latitude                                                            Decimal          @default(0.00000000) @db.Decimal(15, 8)
+  logtime                                                             DateTime         @default(now()) @db.Timestamp(0)
+  visionWareNumber                                                    Int              @default(0)
+  yescall                                                             Boolean          @default(false)
+  yestxt                                                              Boolean          @default(false)
+  yesfax                                                              Boolean          @default(false)
+  yesemail                                                            Boolean          @default(false)
+  alias                                                               String?          @db.VarChar(45)
+  home_strip                                                          String           @default(dbgenerated("()")) @db.VarChar(45)
+  cell_strip                                                          String           @default(dbgenerated("()")) @db.VarChar(45)
+  work_strip                                                          String           @default(dbgenerated("()")) @db.VarChar(45)
+  fax_strip                                                           String           @default(dbgenerated("()")) @db.VarChar(45)
+  email_strip                                                         String           @default(dbgenerated("()")) @db.VarChar(45)
+  PatientPrivacyConsentAcceptODTransfer                               Boolean          @default(false)
+  PatientSource_idPatientSource                                       Int?
+  lastEE_idStore                                                      Int?
+  FamilyDoctor_idUser                                                 Int?
+  user_patient_FamilyDoctor_idUserTouser                              user?            @relation("patient_FamilyDoctor_idUserTouser", fields: [FamilyDoctor_idUser], references: [idUser], onDelete: Restrict, onUpdate: Restrict, map: "fk_Patient_User2")
+  patient_patientTopatient_OtherInsuredPatient_idPatient              patient?         @relation("patientTopatient_OtherInsuredPatient_idPatient", fields: [OtherInsuredPatient_idPatient], references: [idPatient], onDelete: Restrict, onUpdate: Restrict, map: "fk_Patient_Patient5")
+  patient_patientTopatient_PrimaryInsuredPatient_idPatient            patient?         @relation("patientTopatient_PrimaryInsuredPatient_idPatient", fields: [PrimaryInsuredPatient_idPatient], references: [idPatient], onDelete: Restrict, onUpdate: Restrict, map: "fk_Patient_Patient2")
+  user                                                                user?            @relation(fields: [ReferringDoctor_idUser], references: [idUser], onDelete: Restrict, onUpdate: Restrict, map: "fk_Patient_User1")
+  store_patient_Store_idStoreTostore                                  store?           @relation("patient_Store_idStoreTostore", fields: [Store_idStore], references: [idStore], onDelete: Restrict, onUpdate: Restrict, map: "fk_Patient_Store1")
+  patient_patientTopatient_SupplementalInsuredPatient_idPatient       patient?         @relation("patientTopatient_SupplementalInsuredPatient_idPatient", fields: [SupplementalInsuredPatient_idPatient], references: [idPatient], onDelete: Restrict, onUpdate: Restrict, map: "fk_Patient_Patient3")
+  patient_patientTopatient_TertiaryInsuredPatient_idPatient           patient?         @relation("patientTopatient_TertiaryInsuredPatient_idPatient", fields: [TertiaryInsuredPatient_idPatient], references: [idPatient], onDelete: Restrict, onUpdate: Restrict, map: "fk_Patient_Patient4")
+  store_patient_enteredInStore_idStoreTostore                         store?           @relation("patient_enteredInStore_idStoreTostore", fields: [enteredInStore_idStore], references: [idStore], onDelete: Restrict, onUpdate: Restrict, map: "fk_Patient_Store2")
+  patient_patientTopatient_referredBy_idPatient                       patient?         @relation("patientTopatient_referredBy_idPatient", fields: [referredBy_idPatient], references: [idPatient], onDelete: Restrict, onUpdate: Restrict, map: "fk_Patient_Patient1")
+  appointments                                                        appointments[]
+  other_patient_patientTopatient_OtherInsuredPatient_idPatient        patient[]        @relation("patientTopatient_OtherInsuredPatient_idPatient")
+  other_patient_patientTopatient_PrimaryInsuredPatient_idPatient      patient[]        @relation("patientTopatient_PrimaryInsuredPatient_idPatient")
+  other_patient_patientTopatient_SupplementalInsuredPatient_idPatient patient[]        @relation("patientTopatient_SupplementalInsuredPatient_idPatient")
+  other_patient_patientTopatient_TertiaryInsuredPatient_idPatient     patient[]        @relation("patientTopatient_TertiaryInsuredPatient_idPatient")
+  other_patient_patientTopatient_referredBy_idPatient                 patient[]        @relation("patientTopatient_referredBy_idPatient")
+  patientinvoice                                                      patientinvoice[]
+
+  @@index([Country_idCountry], map: "fk_Patient_Country1")
+  @@index([PrimaryInsurancePlan_idInsurancePlan], map: "fk_Patient_InsurancePlan1_idx")
+  @@index([SupplementalInsurancePlan_idInsurancePlan], map: "fk_Patient_InsurancePlan2_idx")
+  @@index([TertiaryInsurancePlan_idInsurancePlan], map: "fk_Patient_InsurancePlan3_idx")
+  @@index([OtherInsurancePlan_idInsurancePlan], map: "fk_Patient_InsurancePlan4_idx")
+  @@index([referredBy_idPatient], map: "fk_Patient_Patient1")
+  @@index([PrimaryInsuredPatient_idPatient], map: "fk_Patient_Patient2_idx")
+  @@index([SupplementalInsuredPatient_idPatient], map: "fk_Patient_Patient3_idx")
+  @@index([TertiaryInsuredPatient_idPatient], map: "fk_Patient_Patient4_idx")
+  @@index([OtherInsuredPatient_idPatient], map: "fk_Patient_Patient5_idx")
+  @@index([PatientLogin_idPatientLogin], map: "fk_Patient_PatientLogin1_idx")
+  @@index([PatientTags_idPatientTags1], map: "fk_Patient_PatientTags1_idx")
+  @@index([PatientTags_idPatientTags2], map: "fk_Patient_PatientTags2_idx")
+  @@index([PatientTags_idPatientTags3], map: "fk_Patient_PatientTags3_idx")
+  @@index([PatientTags_idPatientTags4], map: "fk_Patient_PatientTags4_idx")
+  @@index([PatientTags_idPatientTags5], map: "fk_Patient_PatientTags5_idx")
+  @@index([ReferalMethods_idReferalMethods], map: "fk_Patient_ReferalMethods1_idx")
+  @@index([Store_idStore], map: "fk_Patient_Store1_idx")
+  @@index([enteredInStore_idStore], map: "fk_Patient_Store2_idx")
+  @@index([PrimaryInsurerSupplier_idSupplier], map: "fk_Patient_Supplier1_idx")
+  @@index([SupplementalSupplier_idSupplier], map: "fk_Patient_Supplier2_idx")
+  @@index([TertiaryInsurerSupplier_idSupplier], map: "fk_Patient_Supplier3_idx")
+  @@index([OtherInsurerSupplier_idSupplier], map: "fk_Patient_Supplier4_idx")
+  @@index([ReferringDoctor_idUser], map: "fk_Patient_User1_idx")
+  @@index([Reference1], map: "ref")
+  @@index([Reference2], map: "ref2")
+  @@index([PatientSource_idPatientSource], map: "fk_Patient_PatientSource_idx")
+  @@index([FamilyDoctor_idUser], map: "fk_Patient_User2_idx")
+}
+
+model patientinvoice {
+  idPatientInvoice                                     Int                  @id @default(autoincrement())
+  orderdate                                            DateTime?            @db.DateTime(0)
+  Patient_idPatient                                    Int?
+  Store_idStore                                        Int
+  promisseddate                                        DateTime?            @db.DateTime(0)
+  delivereddate                                        DateTime?            @db.DateTime(0)
+  CreateBy_idUser                                      Int
+  version                                              Int
+  noteOnInvoice                                        String               @db.VarChar(150)
+  balance                                              Decimal              @default(0.00) @db.Decimal(10, 2)
+  SalesRep                                             Int?
+  Reference1                                           String?              @db.VarChar(45)
+  Reference2                                           String?              @db.VarChar(45)
+  uploads_iduploads                                    Int?
+  uploadName                                           String?              @db.VarChar(100)
+  QuickbooksListID                                     String?              @db.VarChar(45)
+  QuickbooksVersionID                                  Int                  @default(0)
+  quickbooksSequenceID                                 String?              @db.VarChar(45)
+  QuickbooksFile_idQuickbooksFile                      Int?
+  QuickbooksIsCreditMemo                               Boolean              @default(false)
+  subtotal                                             Decimal              @default(0.00) @db.Decimal(10, 2)
+  tax1                                                 Decimal              @default(0.00) @db.Decimal(10, 2)
+  tax2                                                 Decimal              @default(0.00) @db.Decimal(10, 2)
+  eyeexam                                              Decimal              @default(0.00) @db.Decimal(10, 2)
+  CreatedOn                                            DateTime             @db.DateTime(0)
+  insurance1_idSupplier                                Int?
+  insurance2_idSupplier                                Int?
+  subtotal_insurance1                                  Decimal              @default(0.00) @db.Decimal(10, 2)
+  tax1_insurance1                                      Decimal              @default(0.00) @db.Decimal(10, 2)
+  tax2_insurance1                                      Decimal              @default(0.00) @db.Decimal(10, 2)
+  subtotal_insurance2                                  Decimal              @default(0.00) @db.Decimal(10, 2)
+  tax1_insurance2                                      Decimal              @default(0.00) @db.Decimal(10, 2)
+  tax2_insurance2                                      Decimal              @default(0.00) @db.Decimal(10, 2)
+  providerUser_idUser                                  Int?
+  patientpayments                                      Decimal              @default(0.00) @db.Decimal(10, 2)
+  shipTo                                               Int                  @default(0)
+  address1                                             String               @db.VarChar(45)
+  address2                                             String               @db.VarChar(45)
+  city                                                 String               @db.VarChar(45)
+  province                                             String               @db.VarChar(45)
+  postalcode                                           String               @db.VarChar(45)
+  Country_idCountry                                    Int?
+  unit                                                 String               @db.VarChar(45)
+  Specials_idSpecials                                  Int?
+  Recalls_idRecalls                                    Int?
+  shiptoname                                           String               @default(dbgenerated("()")) @db.VarChar(45)
+  doctorUser_idUser                                    Int?
+  pickUpAtStore_idStore                                Int?
+  WriteOffBalanceAmount                                Decimal              @default(0.00) @db.Decimal(10, 2)
+  WriteOffBalanceDate                                  DateTime?            @db.DateTime(0)
+  WriteOffBalanceUser_idUser                           Int?
+  isEstimate                                           Boolean              @default(false)
+  EstimateDate                                         DateTime?            @db.DateTime(0)
+  PrimaryClaimNumber                                   String               @default(dbgenerated("()")) @db.VarChar(300)
+  SecondaryClaimNumber                                 String               @default(dbgenerated("()")) @db.VarChar(300)
+  PrimaryClaimSentOn                                   DateTime?            @db.DateTime(0)
+  SecondaryClaimSentOn                                 DateTime?            @db.DateTime(0)
+  PrimaryClaimStatusCode                               Int                  @default(0)
+  PrimaryClaimStatusDescription                        String               @default(dbgenerated("()")) @db.VarChar(300)
+  SecondaryClaimStatusCode                             Int                  @default(0)
+  SecondaryClaimStatusDescription                      String               @default(dbgenerated("()")) @db.VarChar(300)
+  PrimaryClaimConfirmation                             String               @default(dbgenerated("()")) @db.VarChar(300)
+  SecondaryClaimConfirmation                           String               @default(dbgenerated("()")) @db.VarChar(300)
+  ExamDate                                             DateTime?            @db.DateTime(0)
+  specialComment                                       String?              @db.VarChar(45)
+  Appointments_idAppointments                          Int?
+  referringUser_idUser                                 Int?
+  invoiceNumber                                        String?              @unique(map: "invoiceNumber_UNIQUE") @db.VarChar(45)
+  lastJobStatus_idJobStatus                            Int?
+  invoiceLevelDiscounts                                Decimal              @default(0.00) @db.Decimal(10, 2)
+  distance                                             Decimal              @default(0.00) @db.Decimal(10, 2)
+  logtime                                              DateTime             @default(now()) @db.Timestamp(0)
+  logtime_postedDate                                   DateTime?            @db.Timestamp(0)
+  isAppointmentPrebilling                              Boolean              @default(false)
+  Visit_idVisit                                        Int?
+  onlineOrder                                          Boolean              @default(false)
+  PatientLogin_idPatientLogin                          Int?
+  PatientSubscription_idPatientSubscription            Int?
+  CreditReason_idCreditReason                          Int?
+  CreditComment                                        String?              @db.VarChar(200)
+  appointments                                         appointments?        @relation(fields: [Appointments_idAppointments], references: [idAppointments], onDelete: Restrict, onUpdate: Restrict, map: "fk_PatientInvoice_Appointments1")
+  user_patientinvoice_CreateBy_idUserTouser            user                 @relation("patientinvoice_CreateBy_idUserTouser", fields: [CreateBy_idUser], references: [idUser], onUpdate: Restrict, map: "fk_PatientInvoice_User1")
+  patient                                              patient?             @relation(fields: [Patient_idPatient], references: [idPatient], onDelete: Restrict, onUpdate: Restrict, map: "fk_PatientInvoice_Patient1")
+  user_patientinvoice_SalesRepTouser                   user?                @relation("patientinvoice_SalesRepTouser", fields: [SalesRep], references: [idUser], onDelete: Restrict, onUpdate: Restrict, map: "fk_PatientInvoice_User2")
+  store_patientinvoice_Store_idStoreTostore            store                @relation("patientinvoice_Store_idStoreTostore", fields: [Store_idStore], references: [idStore], onUpdate: Restrict, map: "fk_PatientInvoice_Store1")
+  user_patientinvoice_WriteOffBalanceUser_idUserTouser user?                @relation("patientinvoice_WriteOffBalanceUser_idUserTouser", fields: [WriteOffBalanceUser_idUser], references: [idUser], onDelete: Restrict, onUpdate: Restrict, map: "fk_PatientInvoice_User5")
+  user_patientinvoice_doctorUser_idUserTouser          user?                @relation("patientinvoice_doctorUser_idUserTouser", fields: [doctorUser_idUser], references: [idUser], onDelete: Restrict, onUpdate: Restrict, map: "fk_PatientInvoice_User4")
+  store_patientinvoice_pickUpAtStore_idStoreTostore    store?               @relation("patientinvoice_pickUpAtStore_idStoreTostore", fields: [pickUpAtStore_idStore], references: [idStore], onDelete: Restrict, onUpdate: Restrict, map: "fk_PatientInvoice_Store2")
+  user_patientinvoice_providerUser_idUserTouser        user?                @relation("patientinvoice_providerUser_idUserTouser", fields: [providerUser_idUser], references: [idUser], onDelete: Restrict, onUpdate: Restrict, map: "fk_PatientInvoice_User3")
+  user_patientinvoice_referringUser_idUserTouser       user?                @relation("patientinvoice_referringUser_idUserTouser", fields: [referringUser_idUser], references: [idUser], onDelete: Restrict, onUpdate: Restrict, map: "fk_PatientInvoice_User6")
+  patientinvoiceitem                                   patientinvoiceitem[]
+
+  @@index([delivereddate, Store_idStore], map: "InvoiceProductionIndex")
+  @@index([Appointments_idAppointments], map: "fk_PatientInvoice_Appointments1_idx")
+  @@index([Country_idCountry], map: "fk_PatientInvoice_Country1_idx")
+  @@index([lastJobStatus_idJobStatus], map: "fk_PatientInvoice_JobStatus1_idx")
+  @@index([Patient_idPatient], map: "fk_PatientInvoice_Patient1")
+  @@index([PatientLogin_idPatientLogin], map: "fk_PatientInvoice_PatientLogin1_idx")
+  @@index([PatientSubscription_idPatientSubscription], map: "fk_PatientInvoice_PatientSubscription1_idx")
+  @@index([QuickbooksFile_idQuickbooksFile], map: "fk_PatientInvoice_QuickbooksFile1_idx")
+  @@index([Recalls_idRecalls], map: "fk_PatientInvoice_Recalls1_idx")
+  @@index([Specials_idSpecials], map: "fk_PatientInvoice_Specials1_idx")
+  @@index([Store_idStore], map: "fk_PatientInvoice_Store1")
+  @@index([pickUpAtStore_idStore], map: "fk_PatientInvoice_Store2_idx")
+  @@index([insurance1_idSupplier], map: "fk_PatientInvoice_Supplier1_idx")
+  @@index([insurance2_idSupplier], map: "fk_PatientInvoice_Supplier2_idx")
+  @@index([CreateBy_idUser], map: "fk_PatientInvoice_User1")
+  @@index([SalesRep], map: "fk_PatientInvoice_User2")
+  @@index([providerUser_idUser], map: "fk_PatientInvoice_User3_idx")
+  @@index([doctorUser_idUser], map: "fk_PatientInvoice_User4_idx")
+  @@index([WriteOffBalanceUser_idUser], map: "fk_PatientInvoice_User5_idx")
+  @@index([referringUser_idUser], map: "fk_PatientInvoice_User6_idx")
+  @@index([Visit_idVisit], map: "fk_PatientInvoice_Visit1_idx")
+  @@index([uploads_iduploads], map: "fk_PatientInvoice_uploads1_idx")
+  @@index([orderdate, Patient_idPatient], map: "invoicePatientDatesIndex")
+  @@index([Patient_idPatient, orderdate], map: "lastPatientInvoice")
+  @@index([Reference1], map: "ref1")
+  @@index([Reference2], map: "ref2")
+  @@index([CreditReason_idCreditReason], map: "fk_PatientInvoice_CreditReason_idx")
+}
+
+model patientinvoiceitem {
+  idPatientInvoiceItem                            Int                  @id @default(autoincrement())
+  PatientInvoice_idPatientInvoice                 Int
+  qty                                             Int
+  unitprice                                       Decimal              @default(0.00000) @db.Decimal(15, 5)
+  tax1amount                                      Decimal              @db.Decimal(10, 2)
+  tax2amount                                      Decimal              @db.Decimal(10, 2)
+  TaxCode_idTaxCode                               Int?
+  Product_idProduct                               Int
+  RxWorksheet_idRxWorksheet                       Int?
+  description                                     String               @db.VarChar(550)
+  CLWorksheet_idCLWorksheet                       Int?
+  worksheetFlag                                   String?              @db.VarChar(45)
+  ContactLens_idContactLens                       Int?
+  StockLens_idStockLens                           Int?
+  Barcode_idBarcode                               Int?
+  discountAuthorizedbyUser_idUser                 Int?
+  ICD_idICD                                       Int?
+  insurance1Amount                                Decimal              @default(0.00) @db.Decimal(10, 2)
+  insurance1Tax1Amount                            Decimal              @default(0.00) @db.Decimal(10, 2)
+  insurance1Tax2Amount                            Decimal              @default(0.00) @db.Decimal(10, 2)
+  insurance2Amount                                Decimal              @default(0.00) @db.Decimal(10, 2)
+  insurance2Tax1Amount                            Decimal              @default(0.00) @db.Decimal(10, 2)
+  insurance2Tax2Amount                            Decimal              @default(0.00) @db.Decimal(10, 2)
+  discountAmount                                  Decimal              @default(0.00) @db.Decimal(10, 2)
+  prediscount_unitprice                           Decimal              @default(0.00) @db.Decimal(10, 2)
+  refundOfPatientInvoiceItem_idPatientInvoiceItem Int?
+  reference1                                      String?              @db.VarChar(45)
+  reference2                                      String?              @db.VarChar(45)
+  datePosted                                      DateTime?            @db.DateTime(0)
+  dateDiscountPosted                              DateTime?            @db.DateTime(0)
+  isEstimate                                      Boolean              @default(false)
+  ICD_idICD1                                      Int?
+  ICD_idICD2                                      Int?
+  ICD_idICD3                                      Int?
+  toOrder                                         Boolean              @default(false)
+  inventoryOutDate                                DateTime?            @db.DateTime(0)
+  inventoryOutMethod                              Int                  @default(0)
+  giftCardProcessed                               BigInt?
+  logtime                                         DateTime             @default(now()) @db.Timestamp(0)
+  logtime_postedDate                              DateTime?            @db.Timestamp(0)
+  Discount_idProduct                              Int?
+  reportDisplay                                   Boolean              @default(false)
+  discountSpreadingAmount                         Decimal              @default(0.00) @db.Decimal(10, 2)
+  promotionSpreadingAmount                        Decimal              @default(0.00) @db.Decimal(10, 2)
+  retailprice                                     Decimal              @default(0.00000) @db.Decimal(15, 5)
+  discountAuthorizedOn                            BigInt?
+  discountAuthorizedNote                          String?              @db.VarChar(300)
+  upc_sku                                         String?              @db.VarChar(45)
+  promotionalCode                                 String?              @db.VarChar(45)
+  patientinvoice                                  patientinvoice       @relation(fields: [PatientInvoice_idPatientInvoice], references: [idPatientInvoice], onUpdate: Restrict, map: "fk_PatientInvoiceItem_PatientInvoice1")
+  user                                            user?                @relation(fields: [discountAuthorizedbyUser_idUser], references: [idUser], onDelete: Restrict, onUpdate: Restrict, map: "fk_PatientInvoiceItem_User1")
+  patientinvoiceitem                              patientinvoiceitem?  @relation("patientinvoiceitemTopatientinvoiceitem_refundOfPatientInvoiceItem_idPatientInvoiceItem", fields: [refundOfPatientInvoiceItem_idPatientInvoiceItem], references: [idPatientInvoiceItem], onDelete: Restrict, onUpdate: Restrict, map: "fk_PatientInvoiceItem_PatientInvoiceItem1")
+  other_patientinvoiceitem                        patientinvoiceitem[] @relation("patientinvoiceitemTopatientinvoiceitem_refundOfPatientInvoiceItem_idPatientInvoiceItem")
+
+  @@index([Discount_idProduct], map: "fk_PatientInvoiceItem_AppliedDiscount")
+  @@index([Barcode_idBarcode], map: "fk_PatientInvoiceItem_Barcode1")
+  @@index([CLWorksheet_idCLWorksheet], map: "fk_PatientInvoiceItem_CLWorksheet1")
+  @@index([ContactLens_idContactLens], map: "fk_PatientInvoiceItem_ContactLens1")
+  @@index([ICD_idICD], map: "fk_PatientInvoiceItem_ICD1_idx")
+  @@index([ICD_idICD1], map: "fk_PatientInvoiceItem_ICD2_idx")
+  @@index([ICD_idICD2], map: "fk_PatientInvoiceItem_ICD3_idx")
+  @@index([ICD_idICD3], map: "fk_PatientInvoiceItem_ICD4_idx")
+  @@index([PatientInvoice_idPatientInvoice], map: "fk_PatientInvoiceItem_PatientInvoice1")
+  @@index([refundOfPatientInvoiceItem_idPatientInvoiceItem], map: "fk_PatientInvoiceItem_PatientInvoiceItem1_idx")
+  @@index([Product_idProduct], map: "fk_PatientInvoiceItem_Product1")
+  @@index([RxWorksheet_idRxWorksheet], map: "fk_PatientInvoiceItem_RxWorksheet1")
+  @@index([StockLens_idStockLens], map: "fk_PatientInvoiceItem_StockLens1")
+  @@index([TaxCode_idTaxCode], map: "fk_PatientInvoiceItem_TaxCode1")
+  @@index([discountAuthorizedbyUser_idUser], map: "fk_PatientInvoiceItem_User1_idx")
+}
+
+model store {
+  idStore                                                    Int                           @id @default(autoincrement())
+  name                                                       String                        @unique(map: "name_UNIQUE") @db.VarChar(45)
+  address1                                                   String                        @db.VarChar(150)
+  address2                                                   String                        @db.VarChar(150)
+  city                                                       String                        @db.VarChar(45)
+  province                                                   String                        @db.VarChar(45)
+  postalcode                                                 String                        @db.VarChar(45)
+  tel1                                                       String                        @db.VarChar(45)
+  tel2                                                       String                        @db.VarChar(45)
+  fax                                                        String                        @db.VarChar(45)
+  tollfree                                                   String                        @db.VarChar(45)
+  email                                                      String                        @db.VarChar(45)
+  website                                                    String                        @db.VarChar(150)
+  inactive                                                   Boolean
+  version                                                    Int
+  taxnumber1                                                 String                        @db.VarChar(45)
+  taxnumber2                                                 String                        @db.VarChar(45)
+  unit                                                       String                        @db.VarChar(45)
+  Country_idCountry                                          Int
+  povOnlineID                                                Int?
+  onlineVersion                                              Int                           @default(0)
+  QuickbooksFile_idQuickbooksFile                            Int?
+  timeZone                                                   String                        @default(dbgenerated("(Canada/Eastern)")) @db.VarChar(45)
+  smsGatewayProtocol                                         Int                           @default(0)
+  smsEmailTo                                                 String?                       @db.VarChar(300)
+  emailFromEmail                                             String?                       @db.VarChar(45)
+  emailFromName                                              String?                       @db.VarChar(45)
+  emailSMPTHost                                              String?                       @db.VarChar(45)
+  emailSMTPPort                                              Int?
+  emailSMTPUsername                                          String?                       @db.VarChar(300)
+  emailSMTPPassword                                          String?                       @db.VarChar(300)
+  emailSMTPAuth                                              Boolean                       @default(false)
+  name_fr                                                    String                        @db.VarChar(45)
+  name_sp                                                    String                        @db.VarChar(45)
+  name_it                                                    String                        @db.VarChar(45)
+  emailSMTPtls                                               Int                           @default(0)
+  useAsDefaultAddress                                        Boolean                       @default(true)
+  ePayAccounts_idePayAccounts                                Int?
+  CompanyName                                                String                        @default(dbgenerated("()")) @db.VarChar(45)
+  edgeMountCapacity                                          Int                           @default(0)
+  cariesStockLenses                                          Boolean                       @default(false)
+  ICDRevision                                                String                        @db.VarChar(45)
+  defaultLanguage                                            Int
+  defaultInvoiceNote                                         String                        @default(dbgenerated("()")) @db.VarChar(600)
+  RxVerificationBeforeOrderRequired                          Boolean                       @default(false)
+  RxVerificationBeforeDeliveryRequired                       Boolean                       @default(false)
+  inclusiveOfTax                                             Boolean                       @default(false)
+  openingBalanceDate                                         DateTime                      @default(dbgenerated("(2010-01-01 00:00:00)")) @db.DateTime(0)
+  openingBalanceClosedOn                                     DateTime?                     @db.DateTime(0)
+  defaultPairLensPricing                                     Boolean                       @default(false)
+  zenddeskid                                                 BigInt?
+  facebookid                                                 String?                       @db.VarChar(300)
+  linkedinid                                                 String?                       @db.VarChar(300)
+  twitterid                                                  String?                       @db.VarChar(300)
+  googleid                                                   String?                       @db.VarChar(300)
+  pinterestid                                                BigInt?
+  instagramid                                                String?                       @db.VarChar(300)
+  Reference1                                                 String?                       @db.VarChar(45)
+  Reference2                                                 String?                       @db.VarChar(45)
+  companyLegalName                                           String?                       @db.VarChar(300)
+  booksClosedDate                                            DateTime?                     @db.Date
+  edgeAtStore_idStore                                        Int?
+  edgeAtSupplier_idSupplier                                  Int?
+  establishmentNumber                                        String                        @default(dbgenerated("()")) @db.VarChar(300)
+  EmailPatientReadReceipt                                    Boolean                       @default(false)
+  EmailPatientDeliveryReceipt                                Boolean                       @default(false)
+  EmailOtherReadReceipt                                      Boolean                       @default(false)
+  EmailOtherDeliveryReceipt                                  Boolean                       @default(false)
+  EmployerIdentificationNumber                               String                        @default(dbgenerated("()")) @db.VarChar(300)
+  IncomingEmailProtocol                                      Boolean                       @default(false)
+  IncomingEmail                                              String                        @default(dbgenerated("()")) @db.VarChar(45)
+  IncomingEmailUsername                                      String                        @default(dbgenerated("()")) @db.VarChar(45)
+  IncomingEmailPassword                                      String                        @default(dbgenerated("()")) @db.VarChar(45)
+  IncomingEmailPort                                          Int                           @default(0)
+  IncomingEmailSSL                                           Int                           @default(0)
+  storeClosedOn                                              DateTime?                     @db.Date
+  frameSrcDefaultToOrder                                     Boolean                       @default(false)
+  inventoryClosedOn                                          DateTime?                     @db.Date
+  Supplier_idSupplier                                        Int?
+  abbreviation                                               String                        @default(dbgenerated("()")) @db.VarChar(5)
+  healthInsurerSupplier_idSupplier                           Int?
+  winkStoreBillStore_idStore                                 Int?
+  winkStoreShipStore_idStore                                 Int?
+  currency                                                   Int                           @default(0)
+  forwardSMSTo                                               String?                       @db.VarChar(300)
+  isOnlineBookingVisible                                     Boolean                       @default(true)
+  longitude                                                  Decimal                       @default(0.00000000) @db.Decimal(15, 8)
+  latitude                                                   Decimal                       @default(0.00000000) @db.Decimal(15, 8)
+  zone1                                                      Int                           @default(0)
+  zone2                                                      Int                           @default(0)
+  zone3                                                      Int                           @default(0)
+  zone4                                                      Int                           @default(0)
+  zone5                                                      Int                           @default(0)
+  TaxRegion_idRegion                                         Int?
+  TaxCode_idTaxCode                                          Int?
+  RxFrameNoSalesTax                                          Boolean                       @default(false)
+  RxCLNoSalesTax                                             Boolean                       @default(false)
+  defaultInvoicePrintoutCondensed                            Int                           @default(0)
+  defaultInvoicePrintoutGroupByWorksheet                     Boolean                       @default(false)
+  defaultInvoiceVeryCondensedMessage                         Int                           @default(0)
+  defaultInvoicePrintoutDoNotPrompt                          Boolean                       @default(false)
+  RxPlanoFrameNoSalesTax                                     Boolean                       @default(false)
+  RxPlanoCLNoSalesTax                                        Boolean                       @default(false)
+  defaultInvoiceVeryCondensedMessageEN                       String                        @default(dbgenerated("()")) @db.VarChar(150)
+  defaultInvoiceVeryCondensedMessageFR                       String                        @default(dbgenerated("()")) @db.VarChar(150)
+  defaultInvoiceVeryCondensedMessageES                       String                        @default(dbgenerated("()")) @db.VarChar(150)
+  defaultInvoiceVeryCondensedMessageIT                       String                        @default(dbgenerated("()")) @db.VarChar(150)
+  logtime                                                    DateTime                      @default(now()) @db.Timestamp(0)
+  Company_idCompany                                          Int?
+  allowSellThroughData                                       Boolean                       @default(false)
+  inventoryLimit                                             Int                           @default(0)
+  inventoryCheckAllowed                                      Boolean                       @default(false)
+  emailOptions                                               Int                           @default(0)
+  googleMailUploads_iduploads                                Int?
+  defaultWinkToWinkId                                        Int?
+  defaultWinkToWinkEmail                                     String?                       @db.VarChar(200)
+  eFaxUsed                                                   Boolean                       @default(false)
+  eFaxProviderName                                           String                        @default(dbgenerated("()")) @db.VarChar(100)
+  TaxCode_idTaxCodeFrames                                    Int?
+  TaxCode_idTaxCodeLenses                                    Int?
+  TaxCode_idTaxCodeCL                                        Int?
+  TaxCode_idTaxCodeExams                                     Int?
+  externalID                                                 String?                       @db.VarChar(100)
+  emailApiKey                                                String?                       @db.VarChar(300)
+  RxWorksheetDefaultSupplier_idSupplier                      Int?
+  ClWorksheetDefaultSupplier_idSupplier                      Int?
+  store_storeTostore_edgeAtStore_idStore                     store?                        @relation("storeTostore_edgeAtStore_idStore", fields: [edgeAtStore_idStore], references: [idStore], onDelete: Restrict, onUpdate: Restrict, map: "fk_Store_Store1")
+  store_storeTostore_winkStoreBillStore_idStore              store?                        @relation("storeTostore_winkStoreBillStore_idStore", fields: [winkStoreBillStore_idStore], references: [idStore], onDelete: Restrict, onUpdate: Restrict, map: "fk_Store_Store2")
+  store_storeTostore_winkStoreShipStore_idStore              store?                        @relation("storeTostore_winkStoreShipStore_idStore", fields: [winkStoreShipStore_idStore], references: [idStore], onDelete: Restrict, onUpdate: Restrict, map: "fk_Store_Store3")
+  appointments                                               appointments[]
+  employee_sched_availability                                employee_sched_availability[]
+  employee_shift_swap                                        employee_shift_swap[]
+  patient_patient_Store_idStoreTostore                       patient[]                     @relation("patient_Store_idStoreTostore")
+  patient_patient_enteredInStore_idStoreTostore              patient[]                     @relation("patient_enteredInStore_idStoreTostore")
+  patientinvoice_patientinvoice_Store_idStoreTostore         patientinvoice[]              @relation("patientinvoice_Store_idStoreTostore")
+  patientinvoice_patientinvoice_pickUpAtStore_idStoreTostore patientinvoice[]              @relation("patientinvoice_pickUpAtStore_idStoreTostore")
+  schedule                                                   schedule[]
+  other_store_storeTostore_edgeAtStore_idStore               store[]                       @relation("storeTostore_edgeAtStore_idStore")
+  other_store_storeTostore_winkStoreBillStore_idStore        store[]                       @relation("storeTostore_winkStoreBillStore_idStore")
+  other_store_storeTostore_winkStoreShipStore_idStore        store[]                       @relation("storeTostore_winkStoreShipStore_idStore")
+  storeopeninghours                                          storeopeninghours[]
+  user                                                       user[]
+  userprivileges                                             userprivileges[]
+
+  @@index([Country_idCountry], map: "fk_Store_Country1")
+  @@index([QuickbooksFile_idQuickbooksFile], map: "fk_Store_QuickbooksFile1_idx")
+  @@index([TaxRegion_idRegion], map: "fk_Store_Region_idx")
+  @@index([edgeAtStore_idStore], map: "fk_Store_Store1_idx")
+  @@index([winkStoreBillStore_idStore], map: "fk_Store_Store2_idx")
+  @@index([winkStoreShipStore_idStore], map: "fk_Store_Store3_idx")
+  @@index([edgeAtSupplier_idSupplier], map: "fk_Store_Supplier1_idx")
+  @@index([Supplier_idSupplier], map: "fk_Store_Supplier2_idx")
+  @@index([healthInsurerSupplier_idSupplier], map: "fk_Store_Supplier3_idx")
+  @@index([TaxCode_idTaxCodeFrames], map: "fk_Store_TaxCode1_idx")
+  @@index([TaxCode_idTaxCodeLenses], map: "fk_Store_TaxCode2_idx")
+  @@index([TaxCode_idTaxCodeCL], map: "fk_Store_TaxCode3_idx")
+  @@index([TaxCode_idTaxCodeExams], map: "fk_Store_TaxCode4_idx")
+  @@index([TaxCode_idTaxCode], map: "fk_Store_TaxCode_idx")
+  @@index([Company_idCompany], map: "fk_Store_comp_idx")
+  @@index([ePayAccounts_idePayAccounts], map: "fk_Store_ePayAccounts1_idx")
+  @@index([googleMailUploads_iduploads], map: "fk_Store_uploads1_idx")
+  @@index([RxWorksheetDefaultSupplier_idSupplier], map: "fk_Store_Supplier4_idx")
+  @@index([ClWorksheetDefaultSupplier_idSupplier], map: "fk_Store_Supplier5_idx")
+}
+
+model storeopeninghours {
+  idStoreOpeningHours Int      @id @default(autoincrement())
+  asOf                DateTime @db.Date
+  MondayHrOpen        Int
+  MondayMinOpen       Int
+  MondayHrClose       Int
+  MondayMinClose      Int
+  Monday              Boolean
+  TuesdayHrOpen       Int
+  TuesdayMinOpen      Int
+  TuesdayHrClose      Int
+  TuesdayMinClose     Int
+  WednesdayHrOpen     Int
+  ThursdayHrOpen      Int
+  FridayHrOpen        Int
+  SaturdayHrOpen      Int
+  SundayHrOpen        Int
+  Tuesday             Boolean
+  Wednesday           Boolean
+  Thursday            Boolean
+  Friday              Boolean
+  Saturday            Boolean
+  Sunday              Boolean
+  WedMinOpen          Int
+  ThuMinOpen          Int
+  FriMinOpen          Int
+  SatMinOpen          Int
+  SunMinOpen          Int
+  WedHrClose          Int
+  ThuHrClose          Int
+  FriHrClose          Int
+  SatHrClose          Int
+  SunHrClose          Int
+  WedMinClose         Int
+  ThuMinClose         Int
+  FriMinClose         Int
+  SatMinClose         Int
+  SunMinClose         Int
+  Store_idStore       Int?
+  User_idUser         Int?
+  store               store?   @relation(fields: [Store_idStore], references: [idStore], onDelete: Restrict, onUpdate: Restrict, map: "fk_StoreOpeningHours_Store1")
+  user                user?    @relation(fields: [User_idUser], references: [idUser], onDelete: Restrict, onUpdate: Restrict, map: "fk_StoreOpeningHours_User1")
+
+  @@index([Store_idStore], map: "fk_StoreOpeningHours_Store1")
+  @@index([User_idUser], map: "fk_StoreOpeningHours_User1_idx")
+}
+
+model user {
+  idUser                                                         Int                           @id @default(autoincrement())
+  type                                                           Int
+  hasSystemAccess                                                Boolean
+  username                                                       String?                       @unique(map: "username_UNIQUE") @db.VarChar(300)
+  password                                                       String?                       @db.VarChar(45)
+  firstname                                                      String                        @db.VarChar(45)
+  lastname                                                       String                        @db.VarChar(45)
+  address1                                                       String                        @db.VarChar(150)
+  address2                                                       String                        @db.VarChar(150)
+  city                                                           String                        @db.VarChar(45)
+  province                                                       String                        @db.VarChar(45)
+  postalcode                                                     String                        @db.VarChar(45)
+  tel1                                                           String                        @db.VarChar(45)
+  tel2                                                           String                        @db.VarChar(45)
+  fax                                                            String                        @db.VarChar(45)
+  tollfree                                                       String                        @db.VarChar(45)
+  email                                                          String?                       @db.VarChar(300)
+  comment                                                        Bytes                         @db.Blob
+  lastlogindate                                                  DateTime?                     @db.DateTime(0)
+  lastTry                                                        DateTime?                     @db.DateTime(0)
+  numberofinvalidtries                                           Int
+  inactive                                                       Boolean
+  version                                                        Int
+  taxCodeAccess                                                  Int                           @default(0)
+  storeAccess                                                    Int                           @default(2)
+  doctorAccess                                                   Int                           @default(2)
+  userAccess                                                     Int                           @default(2)
+  advertisingAccess                                              Int                           @default(2)
+  negpos                                                         Boolean                       @default(false)
+  negposDontAsk                                                  Boolean                       @default(false)
+  CalendarUseCategories                                          Boolean                       @default(false)
+  GoogleCalendarID                                               String?                       @db.VarChar(300)
+  locale                                                         String                        @default(dbgenerated("()")) @db.VarChar(300)
+  termsOfUseVersion                                              Int                           @default(0)
+  termsOfUseAcceptedOn                                           BigInt                        @default(0)
+  termsOfUseMacAddress                                           String                        @db.VarChar(45)
+  googleCalendarUploads_iduploads                                Int?
+  reference1                                                     String?                       @db.VarChar(45)
+  reference2                                                     String?                       @db.VarChar(45)
+  providerType                                                   Int
+  prefersGeneric                                                 Boolean                       @default(false)
+  providerLicense                                                String                        @default(dbgenerated("()")) @db.VarChar(45)
+  Country_idCountry                                              Int?
+  zenddeskid                                                     BigInt?
+  facebookid                                                     String?                       @db.VarChar(300)
+  linkedinid                                                     String?                       @db.VarChar(300)
+  twitterid                                                      String?                       @db.VarChar(300)
+  googleid                                                       String?                       @db.VarChar(300)
+  pinterestid                                                    String?                       @db.VarChar(300)
+  instagramid                                                    String?                       @db.VarChar(300)
+  locale_fr                                                      String                        @default(dbgenerated("()")) @db.VarChar(300)
+  locale_es                                                      String                        @default(dbgenerated("()")) @db.VarChar(300)
+  locale_it                                                      String                        @default(dbgenerated("()")) @db.VarChar(300)
+  accessCard                                                     String?                       @unique(map: "accessCard_UNIQUE") @db.VarChar(300)
+  signatureUploads_iduploads                                     Int?
+  SocialInsuranceNumber                                          String                        @default(dbgenerated("()")) @db.VarChar(45)
+  hideCreditNoteWarning                                          Boolean                       @default(false)
+  hideRefundWarning                                              Boolean                       @default(false)
+  nickname                                                       String?                       @db.VarChar(15)
+  inactivityTimerOption                                          Int                           @default(0)
+  inactivityTimerSeconds                                         Int                           @default(0)
+  allowForceCommentToLab                                         Boolean                       @default(false)
+  patientConsentDontAsk                                          Boolean                       @default(false)
+  providerGroupNumber                                            String                        @default(dbgenerated("()")) @db.VarChar(45)
+  dateFormat                                                     Int                           @default(0)
+  digitalSignatureUser_idUser                                    Int?
+  licensingBodySupplier_idSupplier                               Int?
+  description                                                    Bytes?                        @db.Blob
+  canBeBookedOnline                                              Boolean                       @default(false)
+  pictureUploads_idUploads                                       Int?
+  providerSpecialityCode                                         String                        @default(dbgenerated("()")) @db.VarChar(45)
+  warningMessage                                                 String?                       @db.VarChar(400)
+  isExternalDoctor                                               Boolean                       @default(false)
+  listsAccess                                                    Int                           @default(0)
+  CommunicationTemplatesAccess                                   Int                           @default(2)
+  labOnlyAccess                                                  Boolean                       @default(false)
+  hasPunchClock                                                  Boolean                       @default(false)
+  employeeNumber                                                 String                        @default(dbgenerated("()")) @db.VarChar(45)
+  csrManager                                                     Boolean                       @default(false)
+  allowMerge                                                     Boolean                       @default(false)
+  Store_idStore                                                  Int?
+  language                                                       Int                           @default(0)
+  preferredSupplier_idSupplier                                   Int?
+  timeZone                                                       String                        @default(dbgenerated("()")) @db.VarChar(45)
+  skipShoppingCart                                               Boolean                       @default(false)
+  insitutionalName                                               String                        @default(dbgenerated("()")) @db.VarChar(100)
+  opt                                                            Int                           @default(-1)
+  MFA                                                            Boolean                       @default(false)
+  secretKey                                                      String?                       @db.VarChar(300)
+  encodedPassword                                                Boolean                       @default(false)
+  appointmentTypeBookable                                        Int                           @default(0)
+  resetPasswordRequestedOn                                       BigInt?
+  excludeFromPasswordPolicy                                      Boolean                       @default(false)
+  externalDoctorAccess                                           Int                           @default(2)
+  activeDirectoryId                                              String?                       @db.VarChar(300)
+  qrCodeScanned                                                  Boolean                       @default(false)
+  provideRegularAppointmentTypes                                 Boolean                       @default(true)
+  store                                                          store?                        @relation(fields: [Store_idStore], references: [idStore], onDelete: Restrict, onUpdate: Restrict, map: "fk_User_Store1")
+  user                                                           user?                         @relation("userTouser_digitalSignatureUser_idUser", fields: [digitalSignatureUser_idUser], references: [idUser], onDelete: Restrict, onUpdate: Restrict, map: "fk_User_User1")
+  appointments                                                   appointments[]
+  employee_calendar_events                                       employee_calendar_events[]
+  employee_sched_availability                                    employee_sched_availability[]
+  employee_shift_swap                                            employee_shift_swap[]
+  messages_messages_senderTouser                                 messages[]                    @relation("messages_senderTouser")
+  messages_messages_storeTouser                                  messages[]                    @relation("messages_storeTouser")
+  patient_patient_FamilyDoctor_idUserTouser                      patient[]                     @relation("patient_FamilyDoctor_idUserTouser")
+  patient                                                        patient[]
+  patientinvoice_patientinvoice_CreateBy_idUserTouser            patientinvoice[]              @relation("patientinvoice_CreateBy_idUserTouser")
+  patientinvoice_patientinvoice_SalesRepTouser                   patientinvoice[]              @relation("patientinvoice_SalesRepTouser")
+  patientinvoice_patientinvoice_WriteOffBalanceUser_idUserTouser patientinvoice[]              @relation("patientinvoice_WriteOffBalanceUser_idUserTouser")
+  patientinvoice_patientinvoice_doctorUser_idUserTouser          patientinvoice[]              @relation("patientinvoice_doctorUser_idUserTouser")
+  patientinvoice_patientinvoice_providerUser_idUserTouser        patientinvoice[]              @relation("patientinvoice_providerUser_idUserTouser")
+  patientinvoice_patientinvoice_referringUser_idUserTouser       patientinvoice[]              @relation("patientinvoice_referringUser_idUserTouser")
+  patientinvoiceitem                                             patientinvoiceitem[]
+  schedule                                                       schedule[]
+  storeopeninghours                                              storeopeninghours[]
+  other_user                                                     user[]                        @relation("userTouser_digitalSignatureUser_idUser")
+  userprivileges                                                 userprivileges[]
+
+  @@index([Country_idCountry], map: "fk_User_Country1_idx")
+  @@index([Store_idStore], map: "fk_User_Store1_idx")
+  @@index([licensingBodySupplier_idSupplier], map: "fk_User_Supplier1_idx")
+  @@index([preferredSupplier_idSupplier], map: "fk_User_Supplier2_idx")
+  @@index([digitalSignatureUser_idUser], map: "fk_User_User1_idx")
+  @@index([googleCalendarUploads_iduploads], map: "fk_User_uploads1_idx")
+  @@index([signatureUploads_iduploads], map: "fk_User_uploads2_idx")
+  @@index([pictureUploads_idUploads], map: "fk_User_uploads3_idx")
+}
+
+model userprivileges {
+  idUserPrivileges          Int         @id @default(autoincrement())
+  User_idUser               Int
+  Store_idStore             Int?
+  UserProfile_idUserProfile Int         @default(1000)
+  isAutoGenerated           Boolean     @default(false)
+  store                     store?      @relation(fields: [Store_idStore], references: [idStore], onDelete: Restrict, onUpdate: Restrict, map: "fk_UserPrivileges_Store1")
+  userprofile               userprofile @relation(fields: [UserProfile_idUserProfile], references: [idUserProfile], onUpdate: Restrict, map: "fk_UserPrivileges_UserProfile1")
+  user                      user        @relation(fields: [User_idUser], references: [idUser], onUpdate: Restrict, map: "fk_UserPrivileges_User")
+  messages                  messages[]
+
+  @@unique([User_idUser, Store_idStore], map: "uniepriv")
+  @@index([Store_idStore], map: "fk_UserPrivileges_Store1")
+  @@index([User_idUser], map: "fk_UserPrivileges_User")
+  @@index([UserProfile_idUserProfile], map: "fk_UserPrivileges_UserProfile1_idx")
+}
+
+model userprofile {
+  idUserProfile                 Int              @id @default(autoincrement())
+  name                          String           @unique(map: "name_UNIQUE") @db.VarChar(45)
+  ordering                      Int
+  inventory                     Int
+  user                          Int
+  patient                       Int
+  invoicing                     Int
+  canChangeInvoicePrice         Boolean
+  canModifyInvoiceAfterDelivery Boolean
+  product                       Int
+  appointments                  Int
+  retailprice                   Int
+  costprice                     Int
+  supplier                      Int
+  receiving                     Int
+  shipping                      Int
+  shippingsettings              Int
+  version                       Int              @default(0)
+  reports                       BigInt           @default(0)
+  canChangeSalesRep             Boolean          @default(false)
+  insurance                     Int              @default(0)
+  submitInsuranceClaims         Boolean          @default(false)
+  sumbitOrders                  Boolean          @default(false)
+  ehr                           Int              @default(0)
+  laboratory                    Int              @default(0)
+  canRefund                     Boolean          @default(false)
+  WINKStore                     Boolean          @default(false)
+  limitReportsToDaily           Boolean          @default(false)
+  inactivityTimerSeconds        Int              @default(0)
+  closeBooks                    Boolean          @default(false)
+  cannotModifyRetail            Boolean          @default(false)
+  showCostOnWorksheet           Boolean          @default(false)
+  canDeletePayments             Boolean          @default(false)
+  canDeleteInvoices             Boolean          @default(false)
+  recall                        Boolean          @default(false)
+  canSetInventoryObjectives     Boolean          @default(false)
+  canUseQuickFrame              Boolean          @default(false)
+  canOverrideNotRxable          Boolean          @default(false)
+  CLFitting                     Int              @default(0)
+  canSendRecalls                Boolean          @default(false)
+  externalDoctors               Int              @default(0)
+  canVerifyWorksheet            Boolean          @default(false)
+  canMarkReadyForCustomer       Boolean          @default(false)
+  punchClockLevel               Int              @default(0)
+  canViewPunchHistory           Boolean          @default(false)
+  canExportExams                Boolean          @default(false)
+  reports2                      BigInt           @default(0)
+  reports3                      BigInt           @default(0)
+  reports4                      BigInt           @default(0)
+  till                          Int              @default(2)
+  medicaldata                   Int              @default(0)
+  emrpretest                    Int              @default(0)
+  discounts                     Boolean          @default(false)
+  referralLetters               Int              @default(0)
+  userprivileges                userprivileges[]
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model messages {
+  conversationID             Int                  @id @default(autoincrement())
+  sender                     Int?
+  receiver                   Int?
+  chat                       String?              @db.VarChar(300)
+  msg_timeStamp              DateTime?            @db.DateTime(0)
+  read_receits               Boolean?
+  user_id                    Int?
+  user_privilages            Int?
+  store                      Int?
+  shift_swap_id              Int?
+  unapproved_swap            Boolean?
+  user_messages_senderTouser user?                @relation("messages_senderTouser", fields: [sender], references: [idUser], onDelete: NoAction, onUpdate: NoAction, map: "sender")
+  employee_shift_swap        employee_shift_swap? @relation(fields: [shift_swap_id], references: [idShiftSwap], onDelete: NoAction, onUpdate: NoAction, map: "shift_swap_id")
+  user_messages_storeTouser  user?                @relation("messages_storeTouser", fields: [store], references: [idUser], onDelete: NoAction, onUpdate: NoAction, map: "user_id")
+  userprivileges             userprivileges?      @relation(fields: [user_privilages], references: [UserProfile_idUserProfile], onDelete: NoAction, onUpdate: NoAction, map: "user_privilages")
+
+  @@index([user_id, sender], map: "user_id_idx")
+  @@index([user_privilages], map: "user_privilages_idx")
+  @@index([store], map: "store_idx")
+  @@index([sender], map: "sender_idx")
+  @@index([unapproved_swap], map: "approved_swap_idx")
+  @@index([shift_swap_id], map: "shift_swap_id_idx")
+}
+
+model employee_calendar_events {
+  event_date   DateTime? @db.Date
+  event_id     Int       @id @default(autoincrement())
+  nameEn       String?   @db.VarChar(45)
+  nameFr       String?   @db.VarChar(45)
+  federal      Boolean?
+  observedDate DateTime? @db.Date
+  province     String?   @db.VarChar(45)
+  user_id      Int?
+  archieve     Boolean?
+  user         user?     @relation(fields: [user_id], references: [idUser], onDelete: NoAction, onUpdate: NoAction, map: "user_id_fk")
+
+  @@index([user_id], map: "user_id_idx")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model employee_sched_availability {
+  idSchedAvailability Int      @id @default(autoincrement())
+  isFulltime          Boolean?
+  availHrsinWeek      Int?
+  User_idUser         Int?
+  Store_idStore       Int?
+  store               store?   @relation(fields: [Store_idStore], references: [idStore], onDelete: NoAction, onUpdate: NoAction, map: "fk_employee_sched_availabilty_store1")
+  user                user?    @relation(fields: [User_idUser], references: [idUser], onDelete: NoAction, onUpdate: NoAction, map: "k_employee_sched_availabilty_user1")
+
+  @@index([Store_idStore], map: "fk_employee_sched_availabilty_store1_idx")
+  @@index([Store_idStore], map: "storeId_idx")
+  @@index([User_idUser], map: "userId_idx")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by the Prisma Client.
+model employee_shift_swap {
+  idShiftSwap         Int        @id @default(autoincrement())
+  User_idUser         Int?
+  Store_idStore       Int?
+  Schedule_idSchedule Int?
+  possibleSwapShiftId Int?
+  requestTimeStamp    DateTime   @default(dbgenerated("(0000-00-00 00:00:00)")) @db.Timestamp(0)
+  approvedTimeStamp   DateTime?  @default(dbgenerated("(0000-00-00 00:00:00)")) @db.Timestamp(0)
+  reason              String?    @db.VarChar(200)
+  approved            Boolean?   @default(false)
+  schedule            schedule?  @relation(fields: [Schedule_idSchedule], references: [idSchedule], onDelete: NoAction, onUpdate: NoAction, map: "fk_employee_shift_swap_schedule1")
+  store               store?     @relation(fields: [Store_idStore], references: [idStore], onDelete: NoAction, onUpdate: NoAction, map: "fk_employee_shift_swap_store1")
+  user                user?      @relation(fields: [User_idUser], references: [idUser], onDelete: NoAction, onUpdate: NoAction, map: "fk_employee_shift_swap_user1")
+  messages            messages[]
+
+  @@index([Schedule_idSchedule], map: "fk_employee_shift_swap_schedule1_idx")
+  @@index([Store_idStore], map: "fk_employee_shift_swap_store1_idx")
+  @@index([User_idUser], map: "fk_employee_shift_swap_user1_idx")
+}
